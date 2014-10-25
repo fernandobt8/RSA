@@ -27,7 +27,7 @@ public class RSA {
 
 	public BigInteger gerarPublicKey(BigInteger e) {
 		Random random = new Random();
-		// gera um e aleatório tal que gcd(phi,e) = 1 e 1 < e < phi
+		// gera um e aleatório até que gcd(phi,e) = 1 e 1 < e < phi
 		while (true) {
 			BigInteger probable = new BigInteger(2048, random);
 			if (probable.bitLength() > 1024 && probable.gcd(this.phi).equals(BigInteger.ONE)) {
@@ -36,16 +36,11 @@ public class RSA {
 		}
 	}
 
-	public void print() {
-		MessageManager.print("p: " + this.p + "\nq: " + this.q + "\nn: " + this.n + "\nphi: " + this.phi + "\ne: " + this.e + "\nnumero bits em e: " + this.e.bitLength() + "\nd: "
-				+ this.d + "\nnumero bits em d: " + this.d.bitLength());
-	}
-
 	// cifra uma mensagem
 	public String encript(String message) {
 		BigInteger number;
 		try {
-			// primeiro converte a mensagem para bytes e pega o numero conrresponde aos bytes.
+			// primeiro converte a mensagem para bytes e pega o numero correspondente aos bytes.
 			number = new BigInteger(message.getBytes("UTF-8"));
 			// se der um numero menor que n, cifra ele, c = m^e mod n.
 			if (number.compareTo(this.n) < 0) {
@@ -68,6 +63,11 @@ public class RSA {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void print() {
+		MessageManager.print("p: " + this.p + "\nq: " + this.q + "\nn: " + this.n + "\nphi: " + this.phi + "\ne: " + this.e + "\nnumero bits em e: " + this.e.bitLength() + "\nd: "
+				+ this.d + "\nnumero bits em d: " + this.d.bitLength());
 	}
 
 }
