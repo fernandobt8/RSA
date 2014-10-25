@@ -11,14 +11,13 @@ public class RSA {
 	private BigInteger d;
 
 	public RSA() {
-		// Gera dois primos p e q aleatórios com até 100 casas decimais
-		this.p = Primalidade.genPrimo(100);
-		this.q = Primalidade.genPrimo(100);
+		// Gera dois primos p e q aleatórios com até 320 casas decimais
+		this.p = Primalidade.genPrimo(320);
+		this.q = Primalidade.genPrimo(320);
 		// n = p * q.
 		this.n = this.p.multiply(this.q);
 		// phi = (p-1)*(q-1)
 		this.phi = this.p.subtract(BigInteger.ONE).multiply(this.q.subtract(BigInteger.ONE));
-
 		// e tal que gcd(phi,e) = 1 e 1 < e < phi
 		this.e = this.gerarPublicKey(this.phi);
 		// d = e^-1 (mod phi)
@@ -29,9 +28,9 @@ public class RSA {
 		Random random = new Random();
 		// gera um e aleatório até que gcd(phi,e) = 1 e 1 < e < phi
 		while (true) {
-			BigInteger probable = new BigInteger(2048, random);
-			if (probable.bitLength() > 1024 && probable.gcd(this.phi).equals(BigInteger.ONE)) {
-				return probable;
+			BigInteger proE = new BigInteger(this.phi.bitLength(), random);
+			if (proE.bitLength() > 64 && this.phi.gcd(proE).equals(BigInteger.ONE)) {
+				return proE;
 			}
 		}
 	}
